@@ -376,7 +376,7 @@ section:target {
 main {
   max-width: var(--maxw-content);
   margin: 0 auto;
-  padding: 0 var(--space-lg);
+  padding: 0 var(--space-2xl);
 }
 
 section {
@@ -406,7 +406,7 @@ section:last-child {
 /* Hero section */
 .hero {
   text-align: center;
-  padding: 12vh 0 8vh;
+  padding: 14vh 0 10vh;
   max-width: var(--maxw-text-wide);
 }
 
@@ -414,7 +414,7 @@ section:last-child {
   font-size: clamp(var(--font-size-4xl), 5vw, var(--font-size-5xl));
   font-weight: var(--font-weight-semibold);
   letter-spacing: -0.02em;
-  margin: 0 0 var(--space-md);
+  margin: 0 0 var(--space-xl);
   line-height: var(--line-height-tight);
   color: var(--color-text);
 }
@@ -423,7 +423,7 @@ section:last-child {
   font-size: var(--font-size-xl);
   color: var(--color-text);
   opacity: 0.9;
-  margin: 0 0 var(--space-xl);
+  margin: 0 0 var(--space-2xl);
   max-width: 65ch;
   margin-left: auto;
   margin-right: auto;
@@ -539,7 +539,7 @@ p {
   gap: var(--space-md);
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: var(--space-xl);
+  margin-top: var(--space-2xl);
 }
 
 .cta.left {
@@ -1127,12 +1127,16 @@ pre code {
     border-radius: 0;
   }
   
+  main {
+    padding: 0 var(--space-lg);
+  }
+  
   section {
     padding: var(--space-3xl) 0;
   }
   
   .hero {
-    padding: 6vh 0 4vh;
+    padding: 8vh 0 6vh;
   }
   
   .cta {
