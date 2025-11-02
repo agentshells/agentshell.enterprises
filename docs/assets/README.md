@@ -5,7 +5,7 @@ This directory contains brand assets for Agent Shell Enterprises corporate websi
 ## Required Assets
 
 - **logo.svg** - Company logo in SVG format (currently placeholder)
-- **social.jpg** - Open Graph preview image, 1200x630px (currently placeholder)
+- **agentshell-enterprises-preview.jpg** - Open Graph preview image, 1200x630px (used for social media previews)
 - **favicon.ico** - Site favicon (currently placeholder)
 - **agent-shell-logo.svg** - Downloadable logo version (to be added)
 - **agent-shell-logo.png** - Downloadable logo PNG version (to be added)

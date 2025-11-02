@@ -19,15 +19,26 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Agent Shell – Investor Updates" />
   <meta property="og:description" content="Investor updates, press coverage, and corporate news from Agent Shell Enterprises Ltd." />
-  <meta property="og:image" content="https://agentshell.enterprises/assets/social.jpg" />
+  <meta property="og:image" content="https://agentshell.enterprises/assets/agentshell-enterprises-preview.jpg" />
   <meta property="og:url" content="https://agentshell.enterprises/resources.html" />
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Agent Shell – Investor Updates" />
   <meta name="twitter:description" content="Investor updates and press coverage." />
-  <meta name="twitter:image" content="https://agentshell.enterprises/assets/social.jpg" />
+  <meta name="twitter:image" content="https://agentshell.enterprises/assets/agentshell-enterprises-preview.jpg" />
   
+  <!-- Set theme immediately to prevent flash -->
+  <script>
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // System prefers dark, but don't set data-theme so CSS media query handles it
+      }
+    })();
+  </script>
   <script src="main.js" defer></script>
 </head>
 <body>
@@ -48,6 +59,9 @@
         <a href="faq.html">FAQ</a>
         <a href="contact.html">Contact</a>
       </nav>
+      <button class="theme-toggle" aria-label="Toggle theme">
+        <span class="theme-toggle-icon">🌙</span>
+      </button>
     </div>
   </header>
 

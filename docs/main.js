@@ -97,5 +97,92 @@
       link.classList.add('active');
     }
   });
+
+  // Theme management - automatic system preference detection with manual override
+  const themeToggle = document.querySelector('.theme-toggle');
+  const html = document.documentElement;
+  
+  // Get saved theme preference or detect system preference
+  function getInitialTheme() {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || saved === 'light') {
+      return saved;
+    }
+    // No saved preference, use system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  
+  // Apply theme
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+    } else if (theme === 'light') {
+      html.setAttribute('data-theme', 'light');
+    } else {
+      // Auto - follow system preference
+      html.removeAttribute('data-theme');
+    }
+    updateThemeToggleIcon();
+  }
+  
+  // Update theme toggle icon
+  function updateThemeToggleIcon() {
+    if (!themeToggle) return;
+    
+    const currentTheme = html.getAttribute('data-theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    let effectiveTheme = currentTheme;
+    if (!effectiveTheme) {
+      effectiveTheme = systemPrefersDark ? 'dark' : 'light';
+    }
+    
+    const icon = themeToggle.querySelector('.theme-toggle-icon');
+    if (icon) {
+      icon.textContent = effectiveTheme === 'dark' ? '☀️' : '🌙';
+    }
+    
+    // Update aria-label for accessibility
+    const nextTheme = effectiveTheme === 'dark' ? 'light' : 'dark';
+    themeToggle.setAttribute('aria-label', `Switch to ${nextTheme} theme`);
+  }
+  
+  // Initialize theme (run immediately, before page paint, to avoid flash)
+  const initialTheme = getInitialTheme();
+  applyTheme(initialTheme);
+  
+  // Update icon after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateThemeToggleIcon);
+  } else {
+    updateThemeToggleIcon();
+  }
+  
+  // Theme toggle button click handler
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      const currentTheme = html.getAttribute('data-theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      let effectiveTheme = currentTheme;
+      if (!effectiveTheme) {
+        effectiveTheme = systemPrefersDark ? 'dark' : 'light';
+      }
+      
+      // Toggle theme
+      const newTheme = effectiveTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+  }
+  
+  // Listen for system theme changes (only if no manual preference set)
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  mediaQuery.addEventListener('change', function(e) {
+    // Only auto-update if user hasn't set a manual preference
+    if (!localStorage.getItem('theme')) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
 })();
 

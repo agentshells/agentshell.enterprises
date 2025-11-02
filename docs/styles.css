@@ -66,6 +66,13 @@
   box-sizing: border-box;
 }
 
+/* Exclude certain elements from theme transitions for better performance */
+img,
+svg,
+video {
+  transition: none;
+}
+
 html {
   scroll-behavior: smooth;
   font-size: 16px;
@@ -82,111 +89,107 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Dark mode support */
+/* Smooth transitions for theme switching */
+* {
+  transition: background-color var(--transition-base), color var(--transition-base), border-color var(--transition-base);
+}
+
+/* Dark mode support - automatic system preference detection */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --color-bg: var(--color-bg-dark);
     --color-text: var(--color-text-invert);
     --color-text-secondary: #b0b0b0;
     --color-border: var(--color-border-dark);
   }
-  
-  .site-header {
-    background: color-mix(in oklab, var(--color-bg-dark) 95%, transparent);
-    border-bottom-color: var(--color-border-dark);
-  }
-  
-  .site-header nav a:hover {
-    background-color: color-mix(in oklab, var(--color-text) 12%, transparent);
-  }
-  
-  .btn-ghost {
-    border-color: var(--color-text);
-    color: var(--color-text);
-  }
-  
-  .link {
-    color: var(--color-teal);
-  }
-  
-  .link:hover {
-    color: var(--color-teal);
-  }
-  
-  .timeline li {
-    border-left-color: var(--color-border-dark);
-  }
-  
-  .timeline li time {
-    color: var(--color-teal);
-  }
-  
-  .hero p:not(.cta) {
-    opacity: 0.95;
-  }
-  
-  .site-footer {
-    border-top-color: var(--color-border-dark);
-    color: var(--color-text-secondary);
-  }
-  
-  .site-footer a {
-    color: var(--color-teal);
-  }
-  
-  .site-footer a:hover {
-    color: var(--color-teal);
-  }
-  
-  #facts li {
-    border-bottom-color: var(--color-border-dark);
-  }
-  
-  .governance-card,
-  .feature-card,
-  .pricing-card,
-  .blog-card,
-  .faq-item {
-    border-color: var(--color-border-dark);
-    background-color: color-mix(in oklab, var(--color-bg-dark) 100%, transparent);
-  }
-  
-  .press-assets a {
-    border-color: #5a5a5a;
-    color: var(--color-text-invert);
-    background-color: #1f1f1f;
-  }
-  
-  .press-assets a:hover {
-    background-color: color-mix(in oklab, var(--color-teal) 20%, var(--color-bg-dark));
-    border-color: var(--color-teal);
-    color: var(--color-text-invert);
-  }
-  
-  .note {
-    background-color: color-mix(in oklab, var(--color-text-invert) 8%, var(--color-bg-dark));
-    color: var(--color-text-invert);
-  }
-  
-  .note strong {
-    color: var(--color-text-invert);
-  }
-  
-  code,
-  pre {
-    background-color: #1a1a1a;
-    border-color: var(--color-border-dark);
-  }
-  
-  .faq-search input {
-    background-color: color-mix(in oklab, var(--color-text-invert) 8%, var(--color-bg-dark));
-    color: var(--color-text-invert);
-    border-color: var(--color-border-dark);
-  }
-  
-  .faq-search input::placeholder {
-    color: var(--color-text-secondary);
-  }
+}
+
+/* Manual dark theme override */
+:root[data-theme="dark"] {
+  --color-bg: var(--color-bg-dark);
+  --color-text: var(--color-text-invert);
+  --color-text-secondary: #b0b0b0;
+  --color-border: var(--color-border-dark);
+}
+
+/* Dark theme specific overrides (using CSS variables for most, but some need explicit rules) */
+:root[data-theme="dark"] .site-header,
+:root:not([data-theme="light"]) .site-header {
+  background: color-mix(in oklab, var(--color-bg-dark) 95%, transparent);
+  border-bottom-color: var(--color-border-dark);
+}
+
+:root[data-theme="dark"] code,
+:root[data-theme="dark"] pre,
+:root:not([data-theme="light"]) code,
+:root:not([data-theme="light"]) pre {
+  background-color: #1a1a1a;
+  border-color: var(--color-border-dark);
+}
+
+:root[data-theme="dark"] .press-assets a,
+:root:not([data-theme="light"]) .press-assets a {
+  border-color: #5a5a5a;
+  color: var(--color-text-invert);
+  background-color: #1f1f1f;
+}
+
+:root[data-theme="dark"] .press-assets a:hover,
+:root:not([data-theme="light"]) .press-assets a:hover {
+  background-color: color-mix(in oklab, var(--color-teal) 20%, var(--color-bg-dark));
+  border-color: var(--color-teal);
+  color: var(--color-text-invert);
+}
+
+/* Light theme override (when system prefers dark but user wants light) */
+:root[data-theme="light"] {
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-text-secondary: #4a4a4a;
+  --color-border: #e0e0e0;
+}
+
+:root[data-theme="light"] code,
+:root[data-theme="light"] pre {
+  background-color: #f5f5f5;
+  border-color: var(--color-border);
+}
+
+:root[data-theme="light"] .press-assets a {
+  border-color: #b0b0b0;
+  color: var(--color-text);
+  background-color: #fafafa;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+  margin-left: var(--space-md);
+}
+
+.theme-toggle:hover {
+  background-color: color-mix(in oklab, var(--color-text) 8%, transparent);
+  border-color: var(--color-teal);
+}
+
+.theme-toggle:focus {
+  outline: 3px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+.theme-toggle-icon {
+  font-size: var(--font-size-base);
 }
 
 /* Header & Navigation */
@@ -198,6 +201,7 @@ body {
   background: color-mix(in oklab, var(--color-bg) 95%, transparent);
   border-bottom: 1px solid var(--color-border);
   padding: var(--space-md) var(--space-lg);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 
 .site-header .header-container {
@@ -1058,6 +1062,13 @@ pre code {
     padding-top: var(--space-md);
     margin-top: var(--space-md);
     width: 100%;
+  }
+  
+  .theme-toggle {
+    margin-left: 0;
+    margin-top: var(--space-md);
+    width: 100%;
+    justify-content: center;
   }
   
   section {
