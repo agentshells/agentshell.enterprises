@@ -102,14 +102,14 @@
   const themeToggle = document.querySelector('.theme-toggle');
   const html = document.documentElement;
   
-  // Get saved theme preference or detect system preference
+  // Get saved theme preference (or null if no preference - will use system preference)
   function getInitialTheme() {
     const saved = localStorage.getItem('theme');
     if (saved === 'dark' || saved === 'light') {
       return saved;
     }
-    // No saved preference, use system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // No saved preference - return null to let CSS media query handle it automatically
+    return null;
   }
   
   // Apply theme
@@ -119,7 +119,7 @@
     } else if (theme === 'light') {
       html.setAttribute('data-theme', 'light');
     } else {
-      // Auto - follow system preference
+      // No theme specified or null - remove data-theme attribute to follow system preference automatically
       html.removeAttribute('data-theme');
     }
     updateThemeToggleIcon();
@@ -149,7 +149,29 @@
   
   // Initialize theme (run immediately, before page paint, to avoid flash)
   const initialTheme = getInitialTheme();
-  applyTheme(initialTheme);
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  // Debug logging (remove in production if needed)
+  if (typeof console !== 'undefined' && console.log) {
+    console.log('[Theme] Initial theme:', initialTheme, 'System prefers dark:', systemPrefersDark);
+  }
+  
+  if (initialTheme !== null) {
+    // User has manually set a preference - apply it
+    applyTheme(initialTheme);
+  } else {
+    // No saved preference - make sure data-theme is not set
+    // This allows CSS @media (prefers-color-scheme) to handle it automatically
+    html.removeAttribute('data-theme');
+    
+    // Verify system preference detection
+    if (typeof console !== 'undefined' && console.log) {
+      console.log('[Theme] No saved preference, following system preference:', systemPrefersDark ? 'dark' : 'light');
+    }
+    
+    // Just update the toggle icon to reflect current system preference
+    updateThemeToggleIcon();
+  }
   
   // Update icon after DOM is ready
   if (document.readyState === 'loading') {
@@ -169,10 +191,20 @@
         effectiveTheme = systemPrefersDark ? 'dark' : 'light';
       }
       
-      // Toggle theme
+      // Toggle theme: if manual override exists, switch to opposite
+      // If no override (following system), set explicit preference to opposite of system
       const newTheme = effectiveTheme === 'dark' ? 'light' : 'dark';
       applyTheme(newTheme);
       localStorage.setItem('theme', newTheme);
+      
+      // Close mobile menu if open
+      if (nav && nav.classList.contains('active') && window.innerWidth <= 768) {
+        nav.classList.remove('active');
+        if (menuToggle) {
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.textContent = '☰';
+        }
+      }
     });
   }
   
@@ -181,7 +213,9 @@
   mediaQuery.addEventListener('change', function(e) {
     // Only auto-update if user hasn't set a manual preference
     if (!localStorage.getItem('theme')) {
-      applyTheme(e.matches ? 'dark' : 'light');
+      // Remove data-theme attribute to let CSS media query handle it automatically
+      html.removeAttribute('data-theme');
+      updateThemeToggleIcon();
     }
   });
 })();

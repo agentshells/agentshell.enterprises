@@ -102,6 +102,30 @@ body {
     --color-text-secondary: #b0b0b0;
     --color-border: var(--color-border-dark);
   }
+  
+  /* Dark theme specific overrides when system prefers dark */
+  :root:not([data-theme="light"]) .site-header {
+    background: color-mix(in oklab, var(--color-bg-dark) 95%, transparent);
+    border-bottom-color: var(--color-border-dark);
+  }
+  
+  :root:not([data-theme="light"]) code,
+  :root:not([data-theme="light"]) pre {
+    background-color: #1a1a1a;
+    border-color: var(--color-border-dark);
+  }
+  
+  :root:not([data-theme="light"]) .press-assets a {
+    border-color: #5a5a5a;
+    color: var(--color-text-invert);
+    background-color: #1f1f1f;
+  }
+  
+  :root:not([data-theme="light"]) .press-assets a:hover {
+    background-color: color-mix(in oklab, var(--color-teal) 20%, var(--color-bg-dark));
+    border-color: var(--color-teal);
+    color: var(--color-text-invert);
+  }
 }
 
 /* Manual dark theme override */
@@ -112,41 +136,69 @@ body {
   --color-border: var(--color-border-dark);
 }
 
-/* Dark theme specific overrides (using CSS variables for most, but some need explicit rules) */
-:root[data-theme="dark"] .site-header,
-:root:not([data-theme="light"]) .site-header {
+/* Dark theme specific overrides when manually set to dark */
+:root[data-theme="dark"] .site-header {
   background: color-mix(in oklab, var(--color-bg-dark) 95%, transparent);
   border-bottom-color: var(--color-border-dark);
 }
 
 :root[data-theme="dark"] code,
-:root[data-theme="dark"] pre,
-:root:not([data-theme="light"]) code,
-:root:not([data-theme="light"]) pre {
+:root[data-theme="dark"] pre {
   background-color: #1a1a1a;
   border-color: var(--color-border-dark);
 }
 
-:root[data-theme="dark"] .press-assets a,
-:root:not([data-theme="light"]) .press-assets a {
+:root[data-theme="dark"] .press-assets a {
   border-color: #5a5a5a;
   color: var(--color-text-invert);
   background-color: #1f1f1f;
 }
 
-:root[data-theme="dark"] .press-assets a:hover,
-:root:not([data-theme="light"]) .press-assets a:hover {
+:root[data-theme="dark"] .press-assets a:hover {
   background-color: color-mix(in oklab, var(--color-teal) 20%, var(--color-bg-dark));
   border-color: var(--color-teal);
   color: var(--color-text-invert);
 }
 
-/* Light theme override (when system prefers dark but user wants light) */
+/* Light theme override - must override both system dark preference and manual dark setting */
 :root[data-theme="light"] {
   --color-bg: #ffffff;
   --color-text: #111111;
   --color-text-secondary: #4a4a4a;
   --color-border: #e0e0e0;
+}
+
+/* Ensure light mode when system prefers light and no manual override */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --color-bg: #ffffff;
+    --color-text: #111111;
+    --color-text-secondary: #4a4a4a;
+    --color-border: #e0e0e0;
+  }
+  
+  :root:not([data-theme="dark"]) .site-header {
+    background: color-mix(in oklab, var(--color-bg) 95%, transparent);
+    border-bottom-color: var(--color-border);
+  }
+
+  :root:not([data-theme="dark"]) code,
+  :root:not([data-theme="dark"]) pre {
+    background-color: #f5f5f5;
+    border-color: var(--color-border);
+  }
+
+  :root:not([data-theme="dark"]) .press-assets a {
+    border-color: #b0b0b0;
+    color: var(--color-text);
+    background-color: #fafafa;
+  }
+
+  :root:not([data-theme="dark"]) .press-assets a:hover {
+    border-color: var(--color-teal);
+    background-color: color-mix(in oklab, var(--color-teal) 8%, var(--color-bg));
+    color: var(--color-text);
+  }
 }
 
 :root[data-theme="light"] code,
@@ -162,7 +214,7 @@ body {
 }
 
 /* Theme toggle button */
-.theme-toggle {
+.site-header nav .theme-toggle {
   background: none;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
@@ -175,15 +227,15 @@ body {
   align-items: center;
   gap: var(--space-xs);
   transition: background-color var(--transition-base), border-color var(--transition-base);
-  margin-left: var(--space-md);
+  white-space: nowrap;
 }
 
-.theme-toggle:hover {
+.site-header nav .theme-toggle:hover {
   background-color: color-mix(in oklab, var(--color-text) 8%, transparent);
   border-color: var(--color-teal);
 }
 
-.theme-toggle:focus {
+.site-header nav .theme-toggle:focus {
   outline: 3px solid var(--color-teal);
   outline-offset: 2px;
 }
@@ -225,9 +277,10 @@ body {
 }
 
 .brand img {
-  height: 32px;
+  height: 40px;
   width: auto;
   flex-shrink: 0;
+  display: block;
 }
 
 .brand:focus {
@@ -1064,11 +1117,14 @@ pre code {
     width: 100%;
   }
   
-  .theme-toggle {
-    margin-left: 0;
-    margin-top: var(--space-md);
+  .site-header nav .theme-toggle {
     width: 100%;
-    justify-content: center;
+    padding: var(--space-md);
+    text-align: left;
+    justify-content: flex-start;
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-md);
+    border-radius: 0;
   }
   
   section {

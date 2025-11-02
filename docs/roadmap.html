@@ -32,10 +32,14 @@
   <script>
     (function() {
       const saved = localStorage.getItem('theme');
+      // Only set data-theme if user has explicitly saved a preference
+      // Otherwise, don't set data-theme so CSS media query can detect system preference
       if (saved === 'dark' || saved === 'light') {
         document.documentElement.setAttribute('data-theme', saved);
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        // System prefers dark, but don't set data-theme so CSS media query handles it
+      } else {
+        // Explicitly ensure data-theme is not set when no preference exists
+        // This allows CSS @media (prefers-color-scheme) to work correctly
+        document.documentElement.removeAttribute('data-theme');
       }
     })();
   </script>
@@ -47,7 +51,7 @@
   <header class="site-header">
     <div class="header-container">
       <a class="brand" href="/" aria-label="Agent Shell Enterprises home">
-        <img src="assets/logo.svg" alt="Agent Shell logo" width="32" height="32" />
+        <img src="assets/agentshell-enterprises-icon-logo-white-transparent.png" alt="Agent Shell Enterprises" />
         <span>Agent Shell Enterprises</span>
       </a>
       <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
@@ -58,10 +62,10 @@
         <a href="resources.html">Updates</a>
         <a href="faq.html">FAQ</a>
         <a href="contact.html">Contact</a>
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <span class="theme-toggle-icon">🌙</span>
+        </button>
       </nav>
-      <button class="theme-toggle" aria-label="Toggle theme">
-        <span class="theme-toggle-icon">🌙</span>
-      </button>
     </div>
   </header>
 
