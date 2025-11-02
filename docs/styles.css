@@ -283,6 +283,53 @@ body {
   display: block;
 }
 
+/* Logo theme switching */
+.brand .logo-dark {
+  display: none;
+}
+
+.brand .logo-light {
+  display: block;
+}
+
+/* Dark mode - show white logo, hide light logo */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .brand .logo-dark {
+    display: block;
+  }
+  
+  :root:not([data-theme="light"]) .brand .logo-light {
+    display: none;
+  }
+}
+
+:root[data-theme="dark"] .brand .logo-dark {
+  display: block;
+}
+
+:root[data-theme="dark"] .brand .logo-light {
+  display: none;
+}
+
+/* Light mode - show light logo, hide dark logo */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .brand .logo-dark {
+    display: none;
+  }
+  
+  :root:not([data-theme="dark"]) .brand .logo-light {
+    display: block;
+  }
+}
+
+:root[data-theme="light"] .brand .logo-dark {
+  display: none;
+}
+
+:root[data-theme="light"] .brand .logo-light {
+  display: block;
+}
+
 .brand:focus {
   outline: 3px solid var(--color-teal);
   outline-offset: 2px;
