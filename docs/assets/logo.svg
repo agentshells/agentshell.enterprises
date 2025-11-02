@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Placeholder logo - replace with actual Agent Shell logo -->
+  <rect width="100" height="100" fill="#111111"/>
+  <text x="50" y="50" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">ASE</text>
+</svg>
