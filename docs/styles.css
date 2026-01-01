@@ -593,6 +593,29 @@ p {
   justify-content: flex-start;
 }
 
+.cta.compact {
+  margin-top: var(--space-md);
+}
+
+.cta.compact .btn {
+  padding: var(--space-sm) var(--space-md);
+  min-height: 40px;
+  font-size: var(--font-size-sm);
+}
+
+/* Keep compact CTAs side-by-side even on smaller screens */
+@media (max-width: 768px) {
+  .cta.compact {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  
+  .cta.compact .btn {
+    width: auto;
+    flex: 1 1 0;
+  }
+}
+
 /* Links */
 a.link {
   color: var(--color-teal);
